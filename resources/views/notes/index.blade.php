@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes des Élèves</title>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f4f4f9;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            min-height: 100vh;
             padding: 20px;
         }
 
         h1 {
-            color: #4a4e69;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            color: #4a90e2;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
         form {
@@ -28,83 +34,91 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         input {
             padding: 10px;
             width: 300px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            outline: none;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         input:focus {
-            border-color: #9a8c98;
-            box-shadow: 0 0 5px rgba(154, 140, 152, 0.5);
-            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3);
         }
 
         button {
             padding: 10px 20px;
             font-size: 1rem;
             color: #fff;
-            background-color: #4a4e69;
+            background-color: #4a90e2;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #22223b;
+            background-color: #357ab7;
         }
 
         table {
             width: 80%;
-            margin-top: 20px;
+            margin-top: 30px;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #fff;
-            overflow: hidden;
             border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            padding: 12px 20px;
+            padding: 15px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             border-bottom: 1px solid #ddd;
         }
 
         th {
-            background-color: #4a4e69;
-            color: #fff;
+            background-color: #4a90e2;
+            color: white;
             font-weight: bold;
         }
 
-        tr.even {
-            background-color: black; 
-            color: white; 
+        /* Black and white row alternating */
+        tr:nth-child(even) {
+            background-color: #000;
+            color: #fff;
         }
 
-        tr.odd {
-            background-color: white; 
+        tr:nth-child(odd) {
+            background-color: #fff;
+            color: #333;
         }
 
         .green { background-color: #44a774; color: white; }
         .orange { background-color: #fb8b23; color: white; }
         .red { background-color: #f26969; color: white; }
 
-        .footer {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            color: #aaa;
+        p {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffcc00;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #333;
         }
 
-        p {
-            background-color: yellow;
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #777;
         }
     </style>
 </head>
@@ -122,23 +136,27 @@
 
     @if(isset($notes) && count($notes) > 0)
         <table>
-            <tr>
-                <th>Nom</th>
-                <th>Note</th>
-            </tr>
-            @foreach($notes as $nom => $note)
-                <tr class="{{ isset($decorate) && $decorate ? ($loop->even ? 'even' : 'odd') : '' }}">
-                    <td @if(isset($colorier))
-                            class="{{ $note > 10 ? 'green' : ($note >= 8 ? 'orange' : 'red') }}"
-                        @endif>{{ $nom }}</td>
-                    <td @if(isset($colorier))
-                            class="{{ $note > 10 ? 'green' : ($note >= 8 ? 'orange' : 'red') }}"
-                        @endif>{{ $note }}</td>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Note</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach($notes as $nom => $note)
+                    <tr>
+                        <td @if(isset($colorier))
+                                class="{{ $note > 10 ? 'green' : ($note >= 8 ? 'orange' : 'red') }}"
+                            @endif>{{ $nom }}</td>
+                        <td @if(isset($colorier))
+                                class="{{ $note > 10 ? 'green' : ($note >= 8 ? 'orange' : 'red') }}"
+                            @endif>{{ $note }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
     @elseif(isset($notes) && count($notes) == 0)
-        <p> Cet élève ne figure pas dans le tableau </p>
+        <p>Cet élève ne figure pas dans le tableau.</p>
     @endif
 </body>
 </html>
